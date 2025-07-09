@@ -29,16 +29,17 @@ def predict():
         duration_days = int(data.get("duration_days"))
         bid_count = int(data.get("bid_count"))
 
-        # One-hot encode category
         category_features = [1 if category == cat else 0 for cat in CATEGORIES]
         features = [starting_price, duration_days, bid_count] + category_features
 
-        # Predict
-prediction = model.predict([features])[0]
-prediction = max(0, round(prediction, 2))  # Ensure price is not negative
-        return jsonify({"success": True, "predicted_price": round(prediction, 2)})
+        prediction = model.predict([features])[0]
+        prediction = max(0, round(prediction, 2))  # ✅ prevent negative predictions
+
+        return jsonify({"success": True, "predicted_price": prediction})
+
     except Exception as e:
         return jsonify({"success": False, "error": str(e)}), 400
+
 
 if __name__ == "__main__":
     app.run()
