@@ -34,7 +34,8 @@ def predict():
         features = [starting_price, duration_days, bid_count] + category_features
 
         # Predict
-        prediction = model.predict([features])[0]
+prediction = model.predict([features])[0]
+prediction = max(0, round(prediction, 2))  # Ensure price is not negative
         return jsonify({"success": True, "predicted_price": round(prediction, 2)})
     except Exception as e:
         return jsonify({"success": False, "error": str(e)}), 400
